@@ -1,0 +1,22 @@
+﻿@page "/todolist"
+@using BlazorToDoList.Models
+@using BlazorToDoList.Components
+
+
+<h1>ToDo List</h1>
+
+
+<CascadingValue name="todoList" Value=@todolist>
+    <ToDoListComponent />
+    <ToDoFormComponent/>
+</CascadingValue>
+
+
+@code {
+    private List<ToDoItem> todolist = new List<ToDoItem>();
+
+    private void ToDoListChanged()
+    {
+        this.StateHasChanged();
+    }
+}

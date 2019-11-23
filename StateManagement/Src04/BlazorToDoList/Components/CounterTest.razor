@@ -1,0 +1,15 @@
+﻿<div>
+    CurrentCounterValue in MyFirstComponent is @CurrentCounterValue
+</div>
+<button @onclick=@UpdateCurrentCounterValue>Update</button>
+@code {
+        [Parameter]
+        public int CurrentCounterValue { get; set; }
+        [Parameter]
+        public EventCallback<int>
+    CurrentCounterValueChanged { get; set; }
+    async Task UpdateCurrentCounterValue()
+    {
+        CurrentCounterValue++;
+    }
+}

@@ -1,0 +1,26 @@
+﻿@page "/todolist"
+@using BlazorToDoList.Models
+@using BlazorToDoList.Components
+@using Blazor.Fluxor
+
+
+<h1>ToDo List</h1>
+
+
+
+<ToDoListComponent />
+<ToDoFormComponent />
+
+
+
+@code {
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+    }
+
+
+}

@@ -1,0 +1,39 @@
+﻿@using BlazorToDoList.Models
+@inject ToDoListStateContainer todoliststatecontainer
+
+    <EditForm Model="@Newtodoitem" OnValidSubmit="@CreaTodo">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <p>
+            <div class="form-field">
+                <label for="descrizione">Descrizione</label>
+                <InputText id="descrizione" @bind-Value=@Newtodoitem.Description />
+            </div>
+        </p>
+        <p>
+            <div class="form-field">
+                <label for="duedate">Due Date</label>
+                <InputDate id="duedate" @bind-Value=@Newtodoitem.DueDate ParsingErrorMessage="Inserire un data valida" />
+            </div>
+        </p>
+        <button type="submit">Salva</button>
+    </EditForm>
+
+
+
+
+@code {
+
+
+    private ToDoItem Newtodoitem = new ToDoItem();
+
+
+    void CreaTodo()
+    {
+        todoliststatecontainer.AddToDoItem(Newtodoitem);
+        Newtodoitem = new ToDoItem();
+
+    }
+
+
+}

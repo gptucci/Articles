@@ -1,0 +1,41 @@
+﻿@using BlazorToDoList.Models
+    
+@if (todolist.Count() <= 0)
+{
+    <p><em>Nessun item</em></p>
+}
+else
+{
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>DueDate</th>
+                <th>Done</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todoitem in todolist)
+            {
+                <tr>
+                    <td>@todoitem.Description</td>
+                    <td>
+                        @(todoitem.DueDate?.ToShortDateString() ?? string.Empty)
+                    </td>
+                    <td><input type="checkbox" value="@todoitem.Done" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+}
+@code {
+    [CascadingParameter(Name = "todoList")]
+    public List<ToDoItem> todolist { get; set; } = new List<ToDoItem>();
+
+
+}
