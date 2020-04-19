@@ -1,0 +1,33 @@
+﻿@page "/"
+@inject ToDoItemsListViewModel ViewModel
+
+
+
+Welcome to your new app.
+
+<h1>@ViewModel.Title</h1>
+
+
+<ToDoFormComponent />
+<ToDoListComponent />
+
+@code {
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ViewModel.Title="Lista ToDoItem";
+        ViewModel.PropertyChanged+=(o, e) => InvokeAsync(() =>
+            {
+
+                StateHasChanged();
+            });;
+    }
+
+}
+
+
+
+
+

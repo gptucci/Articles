@@ -1,0 +1,52 @@
+﻿@page "/"
+
+
+<h1>@Title</h1>
+
+<CascadingValue Value=@IsBusy Name="IsBusy">
+    <CascadingValue Value=@ToDoItemList Name="ToDoItemList">
+        <ToDoFormComponent ToDoItemListChanged="AddToDoItemHandler"/>
+        <ToDoListComponent />
+    </CascadingValue>
+</CascadingValue>
+
+    @code {
+        bool IsBusy { get; set; }
+        List<ToDoItem> ToDoItemList = new List<ToDoItem>();
+        string Title { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+
+
+            IsBusy = true;
+
+            //Per simulare lunga operazione di recupero dei dati
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            ToDoItemList = Enumerable.Range(1, 20).Select(x => new ToDoItem { Description = "todo " + x }).ToList();
+            Title = "Totale ToDo: " + ToDoItemList.Count();
+
+            IsBusy = false;
+
+
+        }
+
+        async Task AddToDoItemHandler(ToDoItem newitem)
+        {
+            IsBusy = true;
+
+            ToDoItemList.Add(newitem);
+            Title = "Totale ToDo: " + ToDoItemList.Count();
+            //Per simulare lunga operazione di inserimento dati
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            IsBusy = false;
+        }
+
+    }
+
+
+
+
+

@@ -1,0 +1,37 @@
+﻿
+@inherits MvvmComponentBase<ToDoItemsListViewModel>
+
+<h3>Lista ToDo</h3>
+@if (@Bind(x => x.ToDoItemList).Count() <= 0)
+    {
+        <p><em>Nessun item</em></p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>DueDate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var todoitem in @Bind(x => x.ToDoItemList))
+                {
+                    <tr>
+                        <td>@todoitem.Description</td>
+                        <td>
+                            @(todoitem.DueDate?.ToShortDateString() ?? string.Empty)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+
+@code {
+    //[Parameter]
+    //public ToDoItemsListViewModel ViewModel { get; set; }
+
+}

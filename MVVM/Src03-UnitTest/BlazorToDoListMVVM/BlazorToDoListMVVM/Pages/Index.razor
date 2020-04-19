@@ -1,0 +1,33 @@
+﻿@page "/"
+@inject ToDoItemsListViewModel ViewModel
+Welcome to your new app.
+
+<h1>@ViewModel.Title</h1>
+
+<CascadingValue Value=@ViewModel Name="ViewModel">
+    <ToDoFormComponent />
+    <ToDoListComponent />
+</CascadingValue>
+
+@code {
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        ViewModel.PropertyChanged += async (o, e) => await InvokeAsync(() =>
+        {
+            Task.Run(StateHasChanged);
+            this.StateHasChanged();
+        });
+
+        await ViewModel.Init();
+
+        await base.OnInitializedAsync();
+    }
+
+
+
+
+}

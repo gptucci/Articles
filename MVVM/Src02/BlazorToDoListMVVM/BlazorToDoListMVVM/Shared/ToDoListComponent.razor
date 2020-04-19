@@ -1,0 +1,33 @@
+﻿<h3>Lista ToDo</h3>
+@if (ViewModel.IsBusy)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>DueDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todoitem in ViewModel.ToDoItemList)
+            {
+                <tr>
+                    <td>@todoitem.Description</td>
+                    <td>
+                        @(todoitem.DueDate?.ToShortDateString() ?? string.Empty)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+    [CascadingParameter(Name = "ViewModel")]
+    public ToDoItemsListViewModel ViewModel { get; set; }
+}

@@ -1,0 +1,44 @@
+﻿<h3>Nuovo ToDo</h3>
+
+
+<EditForm Model="@Newtodoitem" OnValidSubmit="@CreaTodo">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <div class="form-field">
+            <label for="descrizione">Descrizione</label>
+            <InputText id="descrizione" @bind-Value=@Newtodoitem.Description />
+        </div>
+    </p>
+    <p>
+        <div class="form-field">
+            <label for="duedate">Due Date</label>
+            <InputDate id="duedate" @bind-Value=@Newtodoitem.DueDate ParsingErrorMessage="Inserire un data valida" />
+        </div>
+    </p>
+    <button type="submit" disabled="@IsBusy" >Salva</button>
+</EditForm>
+
+
+@code {
+    [CascadingParameter(Name = "ToDoItemList")]
+    public List<ToDoItem> ToDoItemList { get; set; }
+
+
+    [CascadingParameter(Name = "IsBusy")]
+    public bool IsBusy { get; set; }
+
+
+    [Parameter]
+    public EventCallback<ToDoItem> ToDoItemListChanged { get; set; }
+
+    private ToDoItem Newtodoitem = new ToDoItem();
+
+
+    async Task CreaTodo()
+    {
+        await ToDoItemListChanged.InvokeAsync(Newtodoitem);
+        Newtodoitem = new ToDoItem();
+    }
+
+}

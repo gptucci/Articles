@@ -1,0 +1,24 @@
+﻿@page "/"
+@inject ToDoItemsListViewModel ViewModel
+
+
+<h1>@ViewModel.Title</h1>
+
+<CascadingValue Value=@ViewModel Name="ViewModel">
+    <ToDoFormComponent />
+    <ToDoListComponent />
+    </CascadingValue>
+
+    @code {
+
+
+        protected override async Task OnInitializedAsync()
+        {
+
+            await ViewModel.Init();
+
+
+            await base.OnInitializedAsync();
+        }
+
+    }
