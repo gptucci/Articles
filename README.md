@@ -1,2 +1,2 @@
 # BlazorGpt
-VAri progetti si Blazor
+Vari progetti Blazor

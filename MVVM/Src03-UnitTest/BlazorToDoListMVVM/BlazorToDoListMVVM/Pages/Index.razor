@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject ToDoItemsListViewModel ViewModel
-Welcome to your new app.
+@using System.ComponentModel;
+@implements IDisposable
 
 <h1>@ViewModel.Title</h1>
 
@@ -16,18 +17,24 @@ Welcome to your new app.
     {
 
 
-        ViewModel.PropertyChanged += async (o, e) => await InvokeAsync(() =>
-        {
-            Task.Run(StateHasChanged);
-            this.StateHasChanged();
-        });
+        ViewModel.PropertyChanged += OnPropertyChangedHandler;
 
         await ViewModel.Init();
 
         await base.OnInitializedAsync();
     }
 
-
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+    public void Dispose()
+    {
+        ViewModel.PropertyChanged -= OnPropertyChangedHandler;
+    }
 
 
 }

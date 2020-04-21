@@ -1,44 +1,41 @@
 ﻿@page "/"
 @inject ToDoItemsListViewModel ViewModel
+@using System.ComponentModel;
+@implements IDisposable
 
-Welcome to your new app.
 
 <h1>@ViewModel.Title</h1>
 
 <CascadingValue Value=@ViewModel Name="ViewModel">
     <ToDoFormComponent />
     <ToDoListComponent />
-    </CascadingValue>
+</CascadingValue>
 
-    @*//Lo statehaschaged funzina solo se c'è passaggio di parametri !!!!'*@
-
-
-    @*https://github.com/dotnet/AspNetCore.Docs/issues/17178*@
-    @*Here is my understanding of the situation.
-
-        Blazor always renders components that have children when StateHasChanged runs.
-        Rendering a component requires settings its properties (parameters).
-        If a parameter is used to store state (state here is something that the end-user can change) things get ugly. Blazor actually emits a compilation warning if a parameter property is set outside of a component (probably because of the exact same reasons). Maybe we should get warned if the parameter property is set inside the component too?*@
+@code {
 
 
-    @code {
+    protected override async Task OnInitializedAsync()
+    {
 
 
-        protected override async Task OnInitializedAsync()
-        {
+        ViewModel.PropertyChanged += OnPropertyChangedHandler;
 
+        await ViewModel.Init();
 
-            ViewModel.PropertyChanged += async (o, e) => await InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
-
-            await ViewModel.Init();
-
-            await base.OnInitializedAsync();
-        }
-
-        
-
-
+        await base.OnInitializedAsync();
     }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+    public void Dispose()
+    {
+        ViewModel.PropertyChanged -= OnPropertyChangedHandler;
+    }
+
+
+}
