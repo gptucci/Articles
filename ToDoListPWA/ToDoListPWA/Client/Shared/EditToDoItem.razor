@@ -1,0 +1,82 @@
+﻿@inject ToDoListLocalRepo toDoListLocalRepo
+
+
+@if (Show)
+{
+
+    <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleLabel">Add Employee</h5>
+                    <button type="button" class="close" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body">
+                    <EditForm Model="@todoitemInEditing" OnValidSubmit="@HandleValidSubmit">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="form-group">
+                            <label for="titolo">Titolo: </label>
+                            <InputText id="titolo" class="form-control" @bind-Value="@todoitemInEditing.Titolo" placeholder="Titolo"></InputText>
+                            <ValidationMessage For="@(() => todoitemInEditing.Titolo)" />
+                        </div>
+                        <div class="form-group">
+                            <label for="descrizione" class="col-sm-3">Descrizione: </label>
+                            <InputTextArea id="descrizione" class="form-control col-sm-8" @bind-Value="@todoitemInEditing.Descrizione" placeholder="Descrizione"></InputTextArea>
+                            <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => todoitemInEditing.Descrizione)" />
+                        </div>
+                        <div class="form-group">
+                            <label for="done" class="col-sm-3">Done: </label>
+                            <input type="checkbox" id="done" @bind="todoitemInEditing.Done">
+
+                            <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => todoitemInEditing.Descrizione)" />
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-primary">Salva</button>
+                        <a class="btn btn-outline-primary" @onclick="@Close">Chiudi</a>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    public bool Show { get; set; }
+    [Parameter]
+    public EventCallback CloseEventCallback { get; set; }
+    ToDoItem todoitemInEditing { get; set; }
+
+    void Close()
+    {
+        Show = false;
+        StateHasChanged();
+    }
+    async Task HandleValidSubmit()
+    {
+
+        await toDoListLocalRepo.SalvaToDoItem(todoitemInEditing);
+
+        todoitemInEditing = null;
+
+        Show = false;
+        StateHasChanged();
+        await CloseEventCallback.InvokeAsync();
+
+    }
+    public void ShowDialog(ToDoItem _todoitem)
+    {
+        todoitemInEditing = _todoitem;
+        Show = true;
+        StateHasChanged();
+    }
+
+}
+

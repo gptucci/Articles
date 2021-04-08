@@ -1,0 +1,79 @@
+﻿@inject IJSRuntime JsRuntime;
+@inject ToDoListLocalRepo toDoListLocalRepo
+@implements IDisposable
+
+
+
+@if (onLine)
+{
+    <h3>On Line</h3>
+    <button class="btn btn-primary" @onclick="Synchronize" disabled="@BottoneDisabilitato">
+        @if (BottoneDisabilitato)
+        {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        }
+        <span>Aggiorna</span>
+    </button>
+}
+else
+{
+    <h3>Connessione assente</h3>
+
+}
+
+
+@code {
+    //https://visualstudiomagazine.com/articles/2020/09/08/blazor-pwa-local-storage.aspx?admgarea=features
+    //WindowNavigator biNavigator;
+    //WindowInterop biWindow;
+    bool onLine { get; set; }
+    //DateTime DataOraUltimaSincronizzazione { get; set; }
+    bool BottoneDisabilitato { get; set; }
+
+    [Parameter]
+    public EventCallback ForceRefreshEventCallback { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //DataOraUltimaSincronizzazione=await toDoListLocalRepo.GetDataOraUltimaSincronizzazione();
+        await base.OnInitializedAsync();
+    }
+
+
+
+    [JSInvokable("Connection.StatusChanged")]
+    public void OnConnectionStatusChanged(bool isOnline)
+    {
+        if (onLine != isOnline)
+        {
+            onLine = isOnline;
+            BottoneDisabilitato = !isOnline;
+        }
+
+        StateHasChanged();
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("Connection.Initialize", DotNetObjectReference.Create(this));
+        }
+    }
+
+
+    public void Dispose()
+    {
+        JsRuntime.InvokeVoidAsync("Connection.Dispose");
+    }
+
+    async Task Synchronize()
+    {
+        BottoneDisabilitato = true;
+        await toDoListLocalRepo.EseguiSync();
+        await ForceRefreshEventCallback.InvokeAsync();
+        //DataOraUltimaSincronizzazione = await toDoListLocalRepo.GetDataOraUltimaSincronizzazione();
+        BottoneDisabilitato = false;
+    }
+
+}
