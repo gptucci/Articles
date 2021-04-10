@@ -39,9 +39,9 @@ namespace ToDoListPWA.Client.Data
         public async Task EseguiSync()
         {
 
-            var EventiStore = await GetToDoItemsStore();
+            var ToDoItemStore = await GetToDoItemsStore();
 
-            var ListaToDoItemDaSincronizzare = EventiStore.ListaToDoItem.Where(x => x.DataOraUltimaModifica > EventiStore.DataOraUltimaTuplaDaServer);
+            var ListaToDoItemDaSincronizzare = ToDoItemStore.ListaToDoItem.Where(x => x.DataOraUltimaModifica > ToDoItemStore.DataOraUltimaTuplaDaServer);
 
 
 
@@ -49,20 +49,18 @@ namespace ToDoListPWA.Client.Data
             {
                 (await _httpClient.PutAsJsonAsync("api/todolist/updatefromclient", ListaToDoItemDaSincronizzare)).EnsureSuccessStatusCode();
                 //A questo punto quelli cancellati non servono più
-                EventiStore.ListaToDoItem.RemoveAll(x => x.Deleted);
+                ToDoItemStore.ListaToDoItem.RemoveAll(x => x.Deleted);
             }
 
 
-            DateTime DataOraUltimaTupla = EventiStore.DataOraUltimaTuplaDaServer;
-
-            //var ListaOrdiniLocali = await _ls.GetItemAsync<List<Ordini>>("ListaOrdiniLocali");
+            DateTime DataOraUltimaTupla = ToDoItemStore.DataOraUltimaTuplaDaServer;
 
             var json = await _httpClient.GetFromJsonAsync<List<ToDoItem>>($"api/todolist/getalltodoitems?since={DataOraUltimaTupla:o}");  //Okkio qui DataOraUltimaTupla deve essere senza specificare zona oraria - https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip
 
             foreach (var itemjson in json)
             {
 
-                var itemlocale = EventiStore.ListaToDoItem.Where(x => x.Id == itemjson.Id).FirstOrDefault();
+                var itemlocale = ToDoItemStore.ListaToDoItem.Where(x => x.Id == itemjson.Id).FirstOrDefault();
 
                 if (itemlocale == null)
                 {
@@ -70,7 +68,7 @@ namespace ToDoListPWA.Client.Data
                     { }
                     else
                     {
-                        EventiStore.ListaToDoItem.Add(itemjson);
+                        ToDoItemStore.ListaToDoItem.Add(itemjson);
 
                     }
 
@@ -79,28 +77,25 @@ namespace ToDoListPWA.Client.Data
                 {
                     if (itemjson.Deleted)
                     {
-                        EventiStore.ListaToDoItem.Remove(itemlocale);
+                        ToDoItemStore.ListaToDoItem.Remove(itemlocale);
 
 
                     }
                     else
                     {
-                        EventiStore.ListaToDoItem[EventiStore.ListaToDoItem.FindIndex(ind => ind.Id == itemjson.Id)] = itemjson;
+                        ToDoItemStore.ListaToDoItem[ToDoItemStore.ListaToDoItem.FindIndex(ind => ind.Id == itemjson.Id)] = itemjson;
                     }
 
                 }
             }
-            EventiStore.DataOraUltimoSync = DateTime.Now;
+            ToDoItemStore.DataOraUltimoSync = DateTime.Now;
             if (json.Count()>0)
             {
-                EventiStore.DataOraUltimaTuplaDaServer = json.Max(x => x.DataOraUltimaModifica);
+                ToDoItemStore.DataOraUltimaTuplaDaServer = json.Max(x => x.DataOraUltimaModifica);
             }
-            else
-            {
-                EventiStore.DataOraUltimaTuplaDaServer = DateTime.MinValue;
-            }
+           
             
-            await _ls.SetItemAsync<ToDoItemsStore>(ToDoItemsLocalStoreLocalStore, EventiStore);
+            await _ls.SetItemAsync<ToDoItemsStore>(ToDoItemsLocalStoreLocalStore, ToDoItemStore);
 
         }
 

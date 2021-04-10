@@ -16,10 +16,10 @@ namespace ToDoListPWA.Server.Controllers
     {
         
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<ToDoListController> _logger;
         private readonly AppDbContext _appDbContext;
 
-        public ToDoListController(ILogger<WeatherForecastController> logger, AppDbContext appDbContext)
+        public ToDoListController(ILogger<ToDoListController> logger, AppDbContext appDbContext)
         {
             _logger = logger;
             _appDbContext = appDbContext;
