@@ -40,10 +40,9 @@ namespace ToDoListPWA.Client.Data
         {
 
             var ToDoItemStore = await GetToDoItemsStore();
+            DateTime DataOraUltimaTuplaDaServer = ToDoItemStore.DataOraUltimaTuplaDaServer;
 
             var ListaToDoItemDaSincronizzare = ToDoItemStore.ListaToDoItem.Where(x => x.DataOraUltimaModifica > ToDoItemStore.DataOraUltimaTuplaDaServer);
-
-
 
             if (ListaToDoItemDaSincronizzare.Count() > 0)
             {
@@ -52,10 +51,7 @@ namespace ToDoListPWA.Client.Data
                 ToDoItemStore.ListaToDoItem.RemoveAll(x => x.Deleted);
             }
 
-
-            DateTime DataOraUltimaTupla = ToDoItemStore.DataOraUltimaTuplaDaServer;
-
-            var json = await _httpClient.GetFromJsonAsync<List<ToDoItem>>($"api/todolist/getalltodoitems?since={DataOraUltimaTupla:o}");  //Okkio qui DataOraUltimaTupla deve essere senza specificare zona oraria - https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip
+            var json = await _httpClient.GetFromJsonAsync<List<ToDoItem>>($"api/todolist/getalltodoitems?since={DataOraUltimaTuplaDaServer:o}");  //Okkio qui DataOraUltimaTupla deve essere senza specificare zona oraria - https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip
 
             foreach (var itemjson in json)
             {
@@ -88,7 +84,7 @@ namespace ToDoListPWA.Client.Data
 
                 }
             }
-            ToDoItemStore.DataOraUltimoSync = DateTime.Now;
+            
             if (json.Count()>0)
             {
                 ToDoItemStore.DataOraUltimaTuplaDaServer = json.Max(x => x.DataOraUltimaModifica);
@@ -123,11 +119,6 @@ namespace ToDoListPWA.Client.Data
                 }
 
 
-                //if (todoitem.Deleted)
-                //    eventiStore.ListaToDoItem.RemoveAll(x => x.Id == todoitem.Id);
-                //else
-                //    eventiStore.ListaToDoItem[eventiStore.ListaToDoItem.FindIndex(ind => ind.Id == todoitem.Id)] = todoitem;
-                //eventiStore.ListaToDoItem[eventiStore.ListaToDoItem.FindIndex(ind => ind.Id == evento.Id)] = evento;
             }
 
             await _ls.SetItemAsync(ToDoItemsLocalStoreLocalStore, eventiStore);
@@ -146,8 +137,6 @@ namespace ToDoListPWA.Client.Data
             var todoItemsStore = await GetToDoItemsStore();
 
             return todoItemsStore.ListaToDoItem.Where(x => x.DataOraUltimaModifica > todoItemsStore.DataOraUltimaTuplaDaServer).Count();
-
-
         }
 
     }

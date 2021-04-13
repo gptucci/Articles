@@ -29,7 +29,6 @@ namespace ToDoListPWA.Server.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateFromClient(List<ToDoItem> todoitems)
         {
-            //https://www.learnentityframeworkcore.com/dbcontext/modifying-data
             foreach (var todoitem in todoitems)
             {
 
@@ -39,22 +38,15 @@ namespace ToDoListPWA.Server.Controllers
 
                     if (!todoitem.Deleted)
                     {
-                        //Ordine da inserire
                         _appDbContext.ToDoItems.Add(todoitem);
 
                     }
-
-
                 }
                 else
                 {
-                    //https://docs.microsoft.com/en-us/ef/core/saving/disconnected-entities
                     if (todoitemdadb.DataOraUltimaModifica < todoitem.DataOraUltimaModifica)
                     {
                         _appDbContext.Entry(todoitemdadb).CurrentValues.SetValues(todoitem);
-
-                        //_appDbContext.ToDoItems.Attach(todoitem);
-                        //_appDbContext.ToDoItems.Update(todoitem);
                     }
 
                 }
@@ -62,16 +54,7 @@ namespace ToDoListPWA.Server.Controllers
 
             }
             await _appDbContext.SaveChangesAsync();
-            //try
-            //{
-            //    await _appDbContext.SaveChangesAsync();
-            //}
-            //catch (Exception e)
-            //{
-
-            //    throw;
-            //}
-
+            
 
             return Ok();
         }

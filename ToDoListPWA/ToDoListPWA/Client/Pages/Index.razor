@@ -2,9 +2,7 @@
 @inject ToDoListLocalRepo toDoListLocalRepo
 @inject IJSRuntime jsRuntime
 
-
 <h1>Lista To Do Item</h1>
-
 
 @if (ListaToDoItem == null)
 {
@@ -16,7 +14,7 @@ else
 
     <button class="btn btn-primary" @onclick="NuovoToDoItem">Nuovo ToDo Item</button>
     <br />
-    <div>Numero Item: @(ListaToDoItem.Count())/Item da sincronizzare:  @(NumeroItemDaSincronizzare)</div>
+    <div>Numero Item: @(ListaToDoItem.Count()) / Item da sincronizzare:  @(NumeroItemDaSincronizzare)</div>
     <table class="table">
         <thead>
             <tr>
@@ -60,8 +58,7 @@ else
     {
 
         await RefreshListaToDoItem();
-        //ListaToDoItem = await toDoListLocalRepo.GetListaToDoItem();
-        //NumeroItemDaSincronizzare=await toDoListLocalRepo.GetNumeroItemDaSincronizzare();
+
     }
     void NuovoToDoItem()
     {
