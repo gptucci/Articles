@@ -51,7 +51,7 @@ namespace ToDoListPWA.Client.Data
                 ToDoItemStore.ListaToDoItem.RemoveAll(x => x.Deleted);
             }
 
-            var json = await _httpClient.GetFromJsonAsync<List<ToDoItem>>($"api/todolist/getalltodoitems?since={DataOraUltimaTuplaDaServer:o}");  //Okkio qui DataOraUltimaTupla deve essere senza specificare zona oraria - https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip
+            var json = await _httpClient.GetFromJsonAsync<List<ToDoItem>>($"api/todolist/getalltodoitems?since={DataOraUltimaTuplaDaServer:o}"); 
 
             foreach (var itemjson in json)
             {
@@ -95,34 +95,7 @@ namespace ToDoListPWA.Client.Data
 
         }
 
-        public async Task SalvaToDoItem(ToDoItem todoitem) //La max dataora tuple ricevute dal server
-        {
-            var eventiStore = await GetToDoItemsStore();
-
-            todoitem.DataOraUltimaModifica = DateTime.Now;
-            if (string.IsNullOrEmpty(todoitem.Id))
-            {
-                todoitem.Id = Guid.NewGuid().ToString();
-                eventiStore.ListaToDoItem.Add(todoitem);
-
-            }
-            else
-            {
-                
-                if (eventiStore.ListaToDoItem.Where(x => x.Id == todoitem.Id).Any())
-                {
-                    eventiStore.ListaToDoItem[eventiStore.ListaToDoItem.FindIndex(ind => ind.Id == todoitem.Id)] = todoitem;
-                }
-                else
-                {
-                    eventiStore.ListaToDoItem.Add( todoitem);
-                }
-
-
-            }
-
-            await _ls.SetItemAsync(ToDoItemsLocalStoreLocalStore, eventiStore);
-        }
+        
 
         
         public async Task<List<ToDoItem>> GetListaToDoItem()

@@ -11,12 +11,12 @@ namespace ToDoListPWA.Shared
         public ToDoItemsStore()
         {
             DataOraUltimaTuplaDaServer = DateTime.MinValue;
-            
+
             ListaToDoItem = new List<ToDoItem>();
         }
 
         public List<ToDoItem> ListaToDoItem { get; set; }
         public DateTime DataOraUltimaTuplaDaServer { get; set; }
-       
+
     }
 }

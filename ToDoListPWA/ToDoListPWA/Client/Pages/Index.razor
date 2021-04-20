@@ -60,6 +60,7 @@ else
         await RefreshListaToDoItem();
 
     }
+
     void NuovoToDoItem()
     {
         ToDoItem nuovotodoitem = new ToDoItem();
@@ -78,8 +79,6 @@ else
         toDoItem.Deleted = true;
         await toDoListLocalRepo.SalvaToDoItem(toDoItem);
         await RefreshListaToDoItem();
-        //ListaToDoItem = await toDoListLocalRepo.GetListaToDoItem();
-        //NumeroItemDaSincronizzare = await toDoListLocalRepo.GetNumeroItemDaSincronizzare();
     }
     async Task RefreshListaToDoItem()
     {

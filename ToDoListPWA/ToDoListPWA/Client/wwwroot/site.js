@@ -3,21 +3,20 @@
 window.Connection = {
     Initialize: function (interop) {
 
-        handler = function () {
+        const updateOnlineStatus = function () {
             interop.invokeMethodAsync("Connection.StatusChanged", navigator.onLine);
         }
 
-        window.addEventListener("online", handler);
-        window.addEventListener("offline", handler);
-
-        handler(navigator.onLine);
+        window.addEventListener("online", updateOnlineStatus);
+        window.addEventListener("offline", updateOnlineStatus);
+        updateOnlineStatus();
     },
     Dispose: function () {
 
-        if (handler != null) {
+        if (updateOnlineStatus != null) {
 
-            window.removeEventListener("online", handler);
-            window.removeEventListener("offline", handler);
+            window.removeEventListener("online", updateOnlineStatus);
+            window.removeEventListener("offline", updateOnlineStatus);
         }
     }
 };
