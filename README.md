@@ -1,2 +1,2 @@
 # BlazorGpt
-Vari progetti Blazor
+Articoli & Post
