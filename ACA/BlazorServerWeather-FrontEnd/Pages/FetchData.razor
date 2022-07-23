@@ -1,0 +1,71 @@
+﻿@page "/fetchdata"
+@inject IHttpClientFactory _clientFactory
+@using System.Text.Json
+@using System.Net.Http.Headers
+
+
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using BlazorServerWeather_FrontEnd.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var request = new HttpRequestMessage(HttpMethod.Get, "[URL Backend]");
+        var client = _clientFactory.CreateClient();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+       
+
+
+        var response = await client.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            var stringResponse = await response.Content.ReadAsStringAsync();
+ 
+            forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(stringResponse,
+                new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        }
+        else
+        {
+            forecasts = new WeatherForecast[0];
+        }
+    }
+}

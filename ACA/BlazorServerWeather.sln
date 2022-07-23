@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerWeather-FrontEnd", "BlazorServerWeather-FrontEnd\BlazorServerWeather-FrontEnd.csproj", "{FF54631C-0A0B-4515-9C1A-30908C1AA4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerWeather-Backend", "BlazorServerWeather-Backend\BlazorServerWeather-Backend.csproj", "{B6529E13-B643-4572-88AC-D4106079F655}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF54631C-0A0B-4515-9C1A-30908C1AA4DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF54631C-0A0B-4515-9C1A-30908C1AA4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF54631C-0A0B-4515-9C1A-30908C1AA4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF54631C-0A0B-4515-9C1A-30908C1AA4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6529E13-B643-4572-88AC-D4106079F655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6529E13-B643-4572-88AC-D4106079F655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6529E13-B643-4572-88AC-D4106079F655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6529E13-B643-4572-88AC-D4106079F655}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {748A9AE5-DE2C-43D5-9092-AE995CA357F6}
+	EndGlobalSection
+EndGlobal
