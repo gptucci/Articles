@@ -2,12 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MauiAppHybrid"
+             xmlns:extlib="clr-namespace:RazorCLib.Pages;assembly=RazorCLib"
              x:Class="MauiAppHybrid.MainPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
-            <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
+            <RootComponent Selector="#app"
+                           ComponentType="{x:Type extlib:Counter}" />
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 
