@@ -1,4 +1,5 @@
-# State Mnagemet
+# State Management
+
 Articolo sullo state managemeent
 Src01 -> Senza State Management e CascadingValue - la UI non esegue refresh
 Src02 -> Senza State Management e gestione callback per ottenere refresh UI
